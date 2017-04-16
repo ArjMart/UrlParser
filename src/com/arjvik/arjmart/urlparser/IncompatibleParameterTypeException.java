@@ -1,6 +1,6 @@
 package com.arjvik.arjmart.urlparser;
 
-public class IncompatibleParameterTypeException extends Exception {
+public class IncompatibleParameterTypeException extends RuntimeException {
 
 	/**
 	 * 
