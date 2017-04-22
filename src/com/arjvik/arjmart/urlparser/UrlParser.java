@@ -36,9 +36,12 @@ public class UrlParser {
 		brokenTemplate = template.split(delimiter);
 	}
 	
-	public UrlParametersMap parse(String URI) throws ParameterFormatException {
+	public UrlParametersMap parse(String URI) throws ParameterFormatException{
+		return parse(URI, new UrlParametersMap());
+	}
+	
+	public UrlParametersMap parse(String URI, UrlParametersMap params) throws ParameterFormatException {
 		String[] brokenURI = URI.split(delimiter);
-		UrlParametersMap params = new UrlParametersMap();
 		for (int i = 0; i < brokenTemplate.length; i++) {
 			if(brokenTemplate[i].matches("\\{\\{.*\\}\\}")){
 				parseParameter(brokenTemplate[i],brokenURI[i],params,i);
@@ -50,9 +53,9 @@ public class UrlParser {
 	private void parseParameter(String template, String value, UrlParametersMap params, int i) throws ParameterFormatException {
 		String[] nameAndType = template.split(":");
 		String name = nameAndType[1];
-		name = name.substring(1); //crop out beginning { from {TYPE:name}
+		name = name.substring(1); //crop out beginning "{" from "{TYPE:name}"
 		String type = nameAndType[0];
-		type = type.substring(0, type.length() - 1); //crop out end } from {TYPE:name}
+		type = type.substring(0, type.length() - 1); //crop out end "}" from "{TYPE:name}"
 		switch(type){
 		case "STRING":
 			addString(params, name, value);
