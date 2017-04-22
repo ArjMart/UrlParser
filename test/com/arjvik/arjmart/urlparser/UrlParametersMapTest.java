@@ -1,4 +1,4 @@
-package com.arjvik.arjmart.urlparser.test;
+package com.arjvik.arjmart.urlparser;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;

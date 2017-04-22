@@ -1,4 +1,4 @@
-package com.arjvik.arjmart.urlparser.test;
+package com.arjvik.arjmart.urlparser;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
