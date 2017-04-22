@@ -1,6 +1,7 @@
 package com.arjvik.arjmart.urlparser.test;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,30 +16,34 @@ public class UrlParametersMapTest {
 
 	@Test
 	public void testAddParameter() {
-		MockMap map = new MockMap();
+		@SuppressWarnings("unchecked")
+		Map<String,ParameterValue> map = (Map<String,ParameterValue>) mock(HashMap.class);
 		UrlParametersMap parameters = new UrlParametersMap(map);
 		parameters.addParameter("ParameterName", "STRING", "value");
-		assertTrue("ParameterMap must have parameter stored",map.hasParameter("ParameterName", "STRING", "value"));
+		verify(map).put("ParameterName", new ParameterValue(ParameterType.STRING,"value"));
 	}
 
 	@Test
 	public void testParameterExistsForRealParam() {
-		MockMap map = new MockMap();
+		@SuppressWarnings("unchecked")
+		Map<String,ParameterValue> map = (Map<String,ParameterValue>) mock(HashMap.class);
+		when(map.containsKey("ParameterName")).thenReturn(true);
 		UrlParametersMap parameters = new UrlParametersMap(map);
 		parameters.addParameter("ParameterName", "STRING", "value");
-		assertEquals("ParameterMap.parameterExists should return true for items that exist",map.containsKey("ParameterName"),parameters.parameterExists("ParameterName"));
+		assertTrue("ParameterMap.parameterExists should return true for items that exist",parameters.parameterExists("ParameterName"));
+		verify(map).containsKey("ParameterName");
 	}
 	
 	@Test
 	public void testParameterExistsForNonexistingParam() {
-		MockMap map = new MockMap();
+		Map<String,ParameterValue> map = new MockMap();
 		UrlParametersMap parameters = new UrlParametersMap(map);
 		assertEquals("ParameterMap.parameterExists should return false for items that don't exist",map.containsKey("DoesntExists"),parameters.parameterExists("DoesntExist"));
 	}
 
 	@Test
 	public void testGetStringOnString() {
-		MockMap map = new MockMap();
+		Map<String,ParameterValue> map = new MockMap();
 		UrlParametersMap parameters = new UrlParametersMap(map);
 		parameters.addParameter("ParameterName", "STRING", "value");
 		assertEquals("ParameterMap.getString should return the right string",parameters.getString("ParameterName"),"value");
@@ -46,7 +51,7 @@ public class UrlParametersMapTest {
 	
 	@Test(expected=IncompatibleParameterTypeException.class)
 	public void testGetStringOnInt() throws IncompatibleParameterTypeException{
-		MockMap map = new MockMap();
+		Map<String,ParameterValue> map = new MockMap();
 		UrlParametersMap parameters = new UrlParametersMap(map);
 		parameters.addParameter("ParameterName", "INT", "1");
 		parameters.getString("ParameterName");
@@ -55,7 +60,7 @@ public class UrlParametersMapTest {
 	
 	@Test
 	public void testGetIntOnInt() {
-		MockMap map = new MockMap();
+		Map<String,ParameterValue> map = new MockMap();
 		UrlParametersMap parameters = new UrlParametersMap(map);
 		parameters.addParameter("ParameterName", "INT", 1);
 		assertEquals("ParameterMap.getInt should return the right int",parameters.getInt("ParameterName"),1);
@@ -63,7 +68,7 @@ public class UrlParametersMapTest {
 	
 	@Test(expected=IncompatibleParameterTypeException.class)
 	public void testGetIntOnString() throws IncompatibleParameterTypeException{
-		MockMap map = new MockMap();
+		Map<String,ParameterValue> map = new MockMap();
 		UrlParametersMap parameters = new UrlParametersMap(map);
 		parameters.addParameter("ParameterName", "STRING", "value");
 		parameters.getInt("ParameterName");
@@ -72,7 +77,7 @@ public class UrlParametersMapTest {
 
 	@Test
 	public void testGetBooleanOnBooolean() {
-		MockMap map = new MockMap();
+		Map<String,ParameterValue> map = new MockMap();
 		UrlParametersMap parameters = new UrlParametersMap(map);
 		parameters.addParameter("ParameterName", "BOOLEAN", true);
 		assertEquals("ParameterMap.getBoolean should return the right boolean",parameters.getBoolean("ParameterName"),true);
@@ -80,14 +85,14 @@ public class UrlParametersMapTest {
 	
 	@Test(expected=IncompatibleParameterTypeException.class)
 	public void testGetBooleanOnString() throws IncompatibleParameterTypeException{
-		MockMap map = new MockMap();
+		Map<String,ParameterValue> map = new MockMap();
 		UrlParametersMap parameters = new UrlParametersMap(map);
 		parameters.addParameter("ParameterName", "STRING", "value");
 		parameters.getBoolean("ParameterName");
 		fail("ParameterMap.getBoolean should throw an error if wrong type");
 	}
 	
-	public static class MockMap implements Map<String,ParameterValue>{
+	private static class MockMap implements Map<String,ParameterValue>{
 		HashMap<String,ParameterValue> map;
 		
 		public MockMap(){
@@ -99,13 +104,6 @@ public class UrlParametersMapTest {
 			return map.put(key,value);
 		}
 		
-		public boolean hasParameter(String name, String parameterType, Object value){
-			return 
-					map.containsKey(name) &&
-					map.get(name).getType().toString().equals(parameterType) &&
-					map.get(name).getValue().equals(value);
-		}
-		
 		@Override
 		public boolean containsKey(Object key) {
 			return map.containsKey(key);
@@ -115,7 +113,6 @@ public class UrlParametersMapTest {
 			return map.get(key);
 		}
 		@Override public void clear() {}
-		
 		@Override public boolean containsValue(Object value) {return false;}
 		@Override public Set<java.util.Map.Entry<String, ParameterValue>> entrySet() {return null;}
 		@Override public boolean isEmpty() {return false;}
