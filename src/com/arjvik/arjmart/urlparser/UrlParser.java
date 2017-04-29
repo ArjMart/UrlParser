@@ -44,13 +44,13 @@ public class UrlParser {
 		String[] brokenURI = URI.split(delimiter);
 		for (int i = 0; i < brokenTemplate.length && i < brokenURI.length; i++) {
 			if(brokenTemplate[i].matches("\\{\\{.*\\}\\}")){
-				parseParameter(brokenTemplate[i],brokenURI[i],params,i);
+				parseParameter(brokenTemplate[i],brokenURI[i],params);
 			}
 		}
 		return params;
 	}
 
-	private void parseParameter(String template, String value, UrlParametersMap params, int i) throws ParameterFormatException {
+	void parseParameter(String template, String value, UrlParametersMap params) throws ParameterFormatException {
 		String[] nameAndType = template.split(":");
 		String name = nameAndType[1];
 		name = name.substring(1); //crop out beginning "{" from "{TYPE:name}"

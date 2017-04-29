@@ -1,6 +1,7 @@
 package com.arjvik.arjmart.urlparser;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import static com.arjvik.arjmart.urlparser.UrlParser.parseBoolean;
 
@@ -28,17 +29,54 @@ public class UrlParserTest {
 		assertTrue("getDelimeter must return the delimiter set by setDelimeter", parser.getDelimiter().equals(delimeter));
 	}
 	
-	@Test()
-	public void testAddString() {
-		
+	@Test
+	public void testParseParameterOnString() throws ParameterFormatException {
+		UrlParser parser = spy(new UrlParser());
+		UrlParametersMap params = mock(UrlParametersMap.class);
+		parser.parseParameter("{STRING:name}", "value", params);
+		verify(parser).addString(params, "name", "value");
 	}
 	
-	@Test()
-	public void testAddInt() {
+	
+	
+	@Test
+	public void testAddString() {
+		UrlParser parser = new UrlParser();
+		UrlParametersMap params = spy(new UrlParametersMap());
+		parser.addString(params, "name", "value");
+		verify(params).addParameter("name", ParameterType.STRING, "value");
 	}
 	
 	@Test
-	public void testAddBoolean() {
+	public void testAddIntOnInt() throws ParameterFormatException {
+		UrlParser parser = new UrlParser();
+		UrlParametersMap params = spy(new UrlParametersMap());
+		parser.addInt(params, "name", "1");
+		verify(params).addParameter("name", ParameterType.INT, 1);
+	}
+	
+	@Test(expected=ParameterFormatException.class)
+	public void testAddIntOnString() throws ParameterFormatException {
+		UrlParser parser = new UrlParser();
+		UrlParametersMap params = spy(new UrlParametersMap());
+		parser.addInt(params, "name", "value");
+		fail("addInt should throw an exception if passed a NAN");
+	}
+	
+	@Test
+	public void testAddBooleanOnBoolean() throws ParameterFormatException {
+		UrlParser parser = new UrlParser();
+		UrlParametersMap params = spy(new UrlParametersMap());
+		parser.addBoolean(params, "name", "true");
+		verify(params).addParameter("name", ParameterType.BOOLEAN, true);
+	}
+	
+	@Test(expected=ParameterFormatException.class)
+	public void testAddBooleanOnString() throws ParameterFormatException {
+		UrlParser parser = new UrlParser();
+		UrlParametersMap params = spy(new UrlParametersMap());
+		parser.addBoolean(params, "name", "value");
+		fail("addBoolean should throw an exception if passed a non-boolean string");
 	}
 
 	@Test
