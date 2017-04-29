@@ -6,8 +6,6 @@ import static org.mockito.Mockito.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.arjvik.arjmart.urlparser.*;
-
 import org.junit.Test;
 
 public class UrlParametersMapTest {

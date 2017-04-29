@@ -42,7 +42,7 @@ public class UrlParser {
 	
 	public UrlParametersMap parse(String URI, UrlParametersMap params) throws ParameterFormatException {
 		String[] brokenURI = URI.split(delimiter);
-		for (int i = 0; i < brokenTemplate.length; i++) {
+		for (int i = 0; i < brokenTemplate.length && i < brokenURI.length; i++) {
 			if(brokenTemplate[i].matches("\\{\\{.*\\}\\}")){
 				parseParameter(brokenTemplate[i],brokenURI[i],params,i);
 			}
@@ -69,11 +69,11 @@ public class UrlParser {
 		}
 	}
 
-	private void addString(UrlParametersMap params, String name, String value) {
+	void addString(UrlParametersMap params, String name, String value) {
 		params.addParameter(name, ParameterType.STRING, value);
 	}
 	
-	private void addInt(UrlParametersMap params, String name, String value) throws ParameterFormatException{
+	void addInt(UrlParametersMap params, String name, String value) throws ParameterFormatException{
 		try{
 			int intValue = Integer.parseInt(value);
 			params.addParameter(name, ParameterType.INT, intValue);
@@ -82,7 +82,7 @@ public class UrlParser {
 		}
 	}
 
-	private void addBoolean(UrlParametersMap params, String name, String value) throws ParameterFormatException {
+	void addBoolean(UrlParametersMap params, String name, String value) throws ParameterFormatException {
 		try{
 			boolean intValue = parseBoolean(value);
 			params.addParameter(name, ParameterType.BOOLEAN, intValue);
@@ -91,7 +91,7 @@ public class UrlParser {
 		}
 	}
 
-	private boolean parseBoolean(String value) throws NumberFormatException {
+	static boolean parseBoolean(String value) throws NumberFormatException {
 		switch(value.toLowerCase()){
 		case "true": return true;
 		case "false": return false;

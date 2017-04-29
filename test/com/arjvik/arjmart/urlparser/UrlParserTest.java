@@ -2,6 +2,8 @@ package com.arjvik.arjmart.urlparser;
 
 import static org.junit.Assert.*;
 
+import static com.arjvik.arjmart.urlparser.UrlParser.parseBoolean;
+
 import java.util.Arrays;
 
 import org.junit.Test;
@@ -25,10 +27,36 @@ public class UrlParserTest {
 		parser.setDelimiter(delimeter);
 		assertTrue("getDelimeter must return the delimiter set by setDelimeter", parser.getDelimiter().equals(delimeter));
 	}
+	
+	@Test()
+	public void testAddString() {
+		
+	}
+	
+	@Test()
+	public void testAddInt() {
+	}
+	
+	@Test
+	public void testAddBoolean() {
+	}
 
 	@Test
-	public void testParse() {
-		fail("Not yet implemented"); // TODO
+	public void testParseBoolean() {
+		assertTrue("parseBoolean should correctly parse booleans according to rules below",
+				parseBoolean("true") &&
+				!parseBoolean("false") &&
+				parseBoolean("1") &&
+				!parseBoolean("0") &&
+				parseBoolean("yes") &&
+				!parseBoolean("no")
+		);
+	}
+	
+	@Test(expected=NumberFormatException.class)
+	public void testParseBooleanOnInvalid() {
+		parseBoolean("not a boolean");
+		fail("parseBoolean should throw an exception if invoked with a non-boolean value");
 	}
 
 }
