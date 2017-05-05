@@ -6,11 +6,13 @@ import static org.mockito.Mockito.*;
 import static com.arjvik.arjmart.urlparser.UrlParser.parseBoolean;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 public class UrlParserTest {
-
+	
 	@Test
 	public void testSetGetTemplate() {
 		UrlParser parser = new UrlParser();
@@ -30,6 +32,33 @@ public class UrlParserTest {
 	}
 	
 	@Test
+	public void testParse() throws ParameterFormatException {
+		UrlParser parser = spy(new UrlParser());
+		UrlParametersMap map = mock(UrlParametersMap.class);
+		parser.setTemplate("/path/to/resource/{INT:IntParam}/{STRING:StringParam}/more/paths/{BOOLEAN:BooleanParam}");
+		doNothing().when(parser).parseParameter(anyString(), anyString(), eq(map));
+		parser.parse("/path/to/resource/1/string/more/paths/true",map);
+		ArgumentCaptor<String> template = ArgumentCaptor.forClass(String.class),
+				value = ArgumentCaptor.forClass(String.class);
+		verify(parser,atLeastOnce()).parseParameter(template.capture(), value.capture(), eq(map));
+		List<String> templateParams = template.getAllValues(),
+				valueParams = value.getAllValues();
+		assertTrue("Template must contain all template values",templateParams.containsAll(
+				Arrays.asList(new String[]{
+						"{INT:IntParam}","{STRING:StringParam}","{BOOLEAN:BooleanParam}"
+		})));
+		assertTrue("Value must contain all values",valueParams.containsAll(
+				Arrays.asList(new String[]{
+						"1","string","true"
+		})));
+		assertTrue("Template and Value index must be the same for Int, String, and Boolean",
+				templateParams.indexOf("{INT:IntParam}")==valueParams.indexOf("1") &&
+				templateParams.indexOf("{STRING:StringParam}")==valueParams.indexOf("string") &&
+				templateParams.indexOf("{BOOLEAN:BooleanParam}")==valueParams.indexOf("true")
+		);
+	}
+	
+	@Test
 	public void testParseParameterOnString() throws ParameterFormatException {
 		UrlParser parser = spy(new UrlParser());
 		UrlParametersMap params = mock(UrlParametersMap.class);
@@ -37,7 +66,29 @@ public class UrlParserTest {
 		verify(parser).addString(params, "name", "value");
 	}
 	
+	@Test
+	public void testParseParameterOnInt() throws ParameterFormatException {
+		UrlParser parser = spy(new UrlParser());
+		UrlParametersMap params = mock(UrlParametersMap.class);
+		parser.parseParameter("{INT:name}", "1", params);
+		verify(parser).addInt(params, "name", "1");
+	}
 	
+	@Test
+	public void testParseParameterOnBoolean() throws ParameterFormatException {
+		UrlParser parser = spy(new UrlParser());
+		UrlParametersMap params = mock(UrlParametersMap.class);
+		parser.parseParameter("{BOOLEAN:name}", "true", params);
+		verify(parser).addBoolean(params, "name", "true");
+	}
+	
+	@Test(expected=ParameterFormatException.class)
+	public void testParseParameterOnInvalidType() throws ParameterFormatException {
+		UrlParser parser = spy(new UrlParser());
+		UrlParametersMap params = mock(UrlParametersMap.class);
+		parser.parseParameter("{NOT-A-TYPE:name}", "true", params);
+		fail("parseParameter should throw an error when passed a non-real type template");
+	}
 	
 	@Test
 	public void testAddString() {

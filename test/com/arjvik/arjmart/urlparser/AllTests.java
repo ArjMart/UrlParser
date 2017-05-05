@@ -7,5 +7,4 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({ UrlParametersMapTest.class, UrlParserTest.class })
 public class AllTests {
-
 }

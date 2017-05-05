@@ -43,7 +43,7 @@ public class UrlParser {
 	public UrlParametersMap parse(String URI, UrlParametersMap params) throws ParameterFormatException {
 		String[] brokenURI = URI.split(delimiter);
 		for (int i = 0; i < brokenTemplate.length && i < brokenURI.length; i++) {
-			if(brokenTemplate[i].matches("\\{\\{.*\\}\\}")){
+			if(brokenTemplate[i].matches("\\{.*\\}")){
 				parseParameter(brokenTemplate[i],brokenURI[i],params);
 			}
 		}
@@ -52,10 +52,10 @@ public class UrlParser {
 
 	void parseParameter(String template, String value, UrlParametersMap params) throws ParameterFormatException {
 		String[] nameAndType = template.split(":");
-		String name = nameAndType[1];
-		name = name.substring(1); //crop out beginning "{" from "{TYPE:name}"
 		String type = nameAndType[0];
-		type = type.substring(0, type.length() - 1); //crop out end "}" from "{TYPE:name}"
+		type = type.substring(1); //crop out beginning "{" from "{TYPE:name}"
+		String name = nameAndType[1];
+		name = name.substring(0, name.length() - 1); //crop out end "}" from "{TYPE:name}"
 		switch(type){
 		case "STRING":
 			addString(params, name, value);
@@ -66,6 +66,8 @@ public class UrlParser {
 		case "BOOLEAN":
 			addBoolean(params, name, value);
 			break;
+		default:
+			throw new ParameterFormatException("Invalid parser type");
 		}
 	}
 
@@ -103,5 +105,9 @@ public class UrlParser {
 			throw new NumberFormatException("Error converting \""+value+"\" to boolean");
 		}
 	}
+	
+	/*static String trimLastSlash(String s){
+		return s.charAt(s.length() - 1)
+	}*///TODO DO THIS!!!
 	
 }
