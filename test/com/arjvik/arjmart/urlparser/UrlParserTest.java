@@ -2,8 +2,10 @@ package com.arjvik.arjmart.urlparser;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
 
 import static com.arjvik.arjmart.urlparser.UrlParser.parseBoolean;
+import static com.arjvik.arjmart.urlparser.UrlParser.trimLastSlash;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +39,7 @@ public class UrlParserTest {
 		UrlParametersMap map = mock(UrlParametersMap.class);
 		parser.setTemplate("/path/to/resource/{INT:IntParam}/{STRING:StringParam}/more/paths/{BOOLEAN:BooleanParam}");
 		doNothing().when(parser).parseParameter(anyString(), anyString(), eq(map));
+		doAnswer(returnsFirstArg()).when(parser).trimLastSlash(anyString());
 		parser.parse("/path/to/resource/1/string/more/paths/true",map);
 		ArgumentCaptor<String> template = ArgumentCaptor.forClass(String.class),
 				value = ArgumentCaptor.forClass(String.class);
@@ -146,6 +149,16 @@ public class UrlParserTest {
 	public void testParseBooleanOnInvalid() {
 		parseBoolean("not a boolean");
 		fail("parseBoolean should throw an exception if invoked with a non-boolean value");
+	}
+	
+	@Test()
+	public void testTrimLastSlashWithSlash() {
+		assertTrue("trimLastSlash should remove the last slash", trimLastSlash("/ends/with/slash/", "[/\\\\]").equals("/ends/with/slash"));
+	}
+	
+	@Test()
+	public void testTrimLastSlashWithoutSlash() {
+		assertTrue("trimLastSlash should do nothing if no slash", trimLastSlash("/what/slash", "[/\\\\]").equals("/what/slash"));
 	}
 
 }

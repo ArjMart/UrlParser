@@ -41,7 +41,8 @@ public class UrlParser {
 	}
 	
 	public UrlParametersMap parse(String URI, UrlParametersMap params) throws ParameterParseException {
-		String[] brokenURI = URI.split(delimiter);
+		String cleanedURI = trimLastSlash(URI);
+		String[] brokenURI = cleanedURI.split(delimiter);
 		for (int i = 0; i < brokenTemplate.length && i < brokenURI.length; i++) {
 			if(brokenTemplate[i].matches("\\{.*\\}")){
 				parseParameter(brokenTemplate[i],brokenURI[i],params);
@@ -106,8 +107,14 @@ public class UrlParser {
 		}
 	}
 	
-	/*static String trimLastSlash(String s){
-		return s.charAt(s.length() - 1)
-	}*///TODO DO THIS!!!
+	String trimLastSlash(String s){
+		return trimLastSlash(s,delimiter);
+	}
+	
+	static String trimLastSlash(String s, String delimiter){
+		return Character.valueOf(s.charAt(s.length() - 1)).toString().matches(delimiter) ?
+				s.substring(0, s.length() - 1) :
+				s;
+	}
 	
 }
