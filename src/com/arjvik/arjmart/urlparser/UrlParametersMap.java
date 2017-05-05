@@ -27,21 +27,27 @@ public class UrlParametersMap {
 		return map.containsKey(name);
 	}
 	
-	public String getString(String name) throws IncompatibleParameterTypeException{
+	public String getString(String name) throws IncompatibleParameterTypeException, ParameterNotProvidedException{
+		if(!map.containsKey(name))
+			throw new ParameterNotProvidedException("Parameter "+name+" was not provided");
 		ParameterValue value = map.get(name);
 		if(!value.getType().equals(ParameterType.STRING))
 			throw new IncompatibleParameterTypeException("Parameter "+value.getType().toString()+" can not be cast to String");
 		return (String) value.getValue();
 	}
 	
-	public int getInt(String name) throws IncompatibleParameterTypeException{
+	public int getInt(String name) throws IncompatibleParameterTypeException, ParameterNotProvidedException{
+		if(!map.containsKey(name))
+			throw new ParameterNotProvidedException("Parameter "+name+" was not provided");
 		ParameterValue value = map.get(name);
 		if(!value.getType().equals(ParameterType.INT))
 			throw new IncompatibleParameterTypeException("Parameter "+value.getType().toString()+" can not be cast to Int");
 		return (Integer) value.getValue();
 	}
 	
-	public boolean getBoolean(String name) throws IncompatibleParameterTypeException{
+	public boolean getBoolean(String name) throws IncompatibleParameterTypeException, ParameterNotProvidedException{
+		if(!map.containsKey(name))
+			throw new ParameterNotProvidedException("Parameter "+name+" was not provided");
 		ParameterValue value = map.get(name);
 		if(!value.getType().equals(ParameterType.BOOLEAN))
 			throw new IncompatibleParameterTypeException("Parameter "+value.getType().toString()+" can not be cast to Boolean");
