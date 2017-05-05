@@ -36,11 +36,11 @@ public class UrlParser {
 		brokenTemplate = template.split(delimiter);
 	}
 	
-	public UrlParametersMap parse(String URI) throws ParameterFormatException{
+	public UrlParametersMap parse(String URI) throws ParameterParseException{
 		return parse(URI, new UrlParametersMap());
 	}
 	
-	public UrlParametersMap parse(String URI, UrlParametersMap params) throws ParameterFormatException {
+	public UrlParametersMap parse(String URI, UrlParametersMap params) throws ParameterParseException {
 		String[] brokenURI = URI.split(delimiter);
 		for (int i = 0; i < brokenTemplate.length && i < brokenURI.length; i++) {
 			if(brokenTemplate[i].matches("\\{.*\\}")){
@@ -50,7 +50,7 @@ public class UrlParser {
 		return params;
 	}
 
-	void parseParameter(String template, String value, UrlParametersMap params) throws ParameterFormatException {
+	void parseParameter(String template, String value, UrlParametersMap params) throws ParameterParseException {
 		String[] nameAndType = template.split(":");
 		String type = nameAndType[0];
 		type = type.substring(1); //crop out beginning "{" from "{TYPE:name}"
@@ -67,7 +67,7 @@ public class UrlParser {
 			addBoolean(params, name, value);
 			break;
 		default:
-			throw new ParameterFormatException("Invalid parser type");
+			throw new ParameterParseException("Invalid parser type");
 		}
 	}
 
@@ -75,21 +75,21 @@ public class UrlParser {
 		params.addParameter(name, ParameterType.STRING, value);
 	}
 	
-	void addInt(UrlParametersMap params, String name, String value) throws ParameterFormatException{
+	void addInt(UrlParametersMap params, String name, String value) throws ParameterParseException{
 		try{
 			int intValue = Integer.parseInt(value);
 			params.addParameter(name, ParameterType.INT, intValue);
 		}catch(NumberFormatException e){
-			throw new ParameterFormatException("String \""+value+"\" could not be parsed as integer",e,value,ParameterType.INT);
+			throw new ParameterParseException("String \""+value+"\" could not be parsed as integer",e,value,ParameterType.INT);
 		}
 	}
 
-	void addBoolean(UrlParametersMap params, String name, String value) throws ParameterFormatException {
+	void addBoolean(UrlParametersMap params, String name, String value) throws ParameterParseException {
 		try{
 			boolean intValue = parseBoolean(value);
 			params.addParameter(name, ParameterType.BOOLEAN, intValue);
 		}catch(NumberFormatException e){
-			throw new ParameterFormatException("String \""+value+"\" could not be parsed as integer",e,value,ParameterType.INT);
+			throw new ParameterParseException("String \""+value+"\" could not be parsed as integer",e,value,ParameterType.INT);
 		}
 	}
 

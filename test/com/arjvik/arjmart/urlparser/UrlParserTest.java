@@ -32,7 +32,7 @@ public class UrlParserTest {
 	}
 	
 	@Test
-	public void testParse() throws ParameterFormatException {
+	public void testParse() throws ParameterParseException {
 		UrlParser parser = spy(new UrlParser());
 		UrlParametersMap map = mock(UrlParametersMap.class);
 		parser.setTemplate("/path/to/resource/{INT:IntParam}/{STRING:StringParam}/more/paths/{BOOLEAN:BooleanParam}");
@@ -59,7 +59,7 @@ public class UrlParserTest {
 	}
 	
 	@Test
-	public void testParseParameterOnString() throws ParameterFormatException {
+	public void testParseParameterOnString() throws ParameterParseException {
 		UrlParser parser = spy(new UrlParser());
 		UrlParametersMap params = mock(UrlParametersMap.class);
 		parser.parseParameter("{STRING:name}", "value", params);
@@ -67,7 +67,7 @@ public class UrlParserTest {
 	}
 	
 	@Test
-	public void testParseParameterOnInt() throws ParameterFormatException {
+	public void testParseParameterOnInt() throws ParameterParseException {
 		UrlParser parser = spy(new UrlParser());
 		UrlParametersMap params = mock(UrlParametersMap.class);
 		parser.parseParameter("{INT:name}", "1", params);
@@ -75,15 +75,15 @@ public class UrlParserTest {
 	}
 	
 	@Test
-	public void testParseParameterOnBoolean() throws ParameterFormatException {
+	public void testParseParameterOnBoolean() throws ParameterParseException {
 		UrlParser parser = spy(new UrlParser());
 		UrlParametersMap params = mock(UrlParametersMap.class);
 		parser.parseParameter("{BOOLEAN:name}", "true", params);
 		verify(parser).addBoolean(params, "name", "true");
 	}
 	
-	@Test(expected=ParameterFormatException.class)
-	public void testParseParameterOnInvalidType() throws ParameterFormatException {
+	@Test(expected=ParameterParseException.class)
+	public void testParseParameterOnInvalidType() throws ParameterParseException {
 		UrlParser parser = spy(new UrlParser());
 		UrlParametersMap params = mock(UrlParametersMap.class);
 		parser.parseParameter("{NOT-A-TYPE:name}", "true", params);
@@ -99,15 +99,15 @@ public class UrlParserTest {
 	}
 	
 	@Test
-	public void testAddIntOnInt() throws ParameterFormatException {
+	public void testAddIntOnInt() throws ParameterParseException {
 		UrlParser parser = new UrlParser();
 		UrlParametersMap params = spy(new UrlParametersMap());
 		parser.addInt(params, "name", "1");
 		verify(params).addParameter("name", ParameterType.INT, 1);
 	}
 	
-	@Test(expected=ParameterFormatException.class)
-	public void testAddIntOnString() throws ParameterFormatException {
+	@Test(expected=ParameterParseException.class)
+	public void testAddIntOnString() throws ParameterParseException {
 		UrlParser parser = new UrlParser();
 		UrlParametersMap params = spy(new UrlParametersMap());
 		parser.addInt(params, "name", "value");
@@ -115,15 +115,15 @@ public class UrlParserTest {
 	}
 	
 	@Test
-	public void testAddBooleanOnBoolean() throws ParameterFormatException {
+	public void testAddBooleanOnBoolean() throws ParameterParseException {
 		UrlParser parser = new UrlParser();
 		UrlParametersMap params = spy(new UrlParametersMap());
 		parser.addBoolean(params, "name", "true");
 		verify(params).addParameter("name", ParameterType.BOOLEAN, true);
 	}
 	
-	@Test(expected=ParameterFormatException.class)
-	public void testAddBooleanOnString() throws ParameterFormatException {
+	@Test(expected=ParameterParseException.class)
+	public void testAddBooleanOnString() throws ParameterParseException {
 		UrlParser parser = new UrlParser();
 		UrlParametersMap params = spy(new UrlParametersMap());
 		parser.addBoolean(params, "name", "value");
