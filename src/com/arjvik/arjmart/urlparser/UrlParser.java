@@ -1,6 +1,11 @@
 package com.arjvik.arjmart.urlparser;
 
-
+/**
+ * The UrlParser class is responsible for parsing URIs, and returning their parameters.
+ * It aims to abstract the parsing of parameters in a RESTful API and instead allow
+ * the developer to focus on the back-end of the RESTful API.
+ * @author Arjun Vikram
+ */
 public class UrlParser {
 	private String delimiter;
 	private String template;
