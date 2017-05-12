@@ -5,24 +5,47 @@ import java.util.Map;
 
 /**
  * The UrlParametersMap class is responsible for returning the parameters passed to it. Its usage is as follows:
+ * <br/> 
  * <pre>
  * UrlParametersMap params = parser.parse("/some/uri");
  * Boolean hasStringName = params.parameterExists("stringParamName");
  * String stringParameterName = params.getString("stringParamName");
  * </pre>
+ * @author Arjun Vikram
+ * @since 1.0.0
  */
 public class UrlParametersMap {
 
 	private Map<String,ParameterValue> map;
 	
+	/**
+	 * Creates a new UrlParametersMap with a HashMap as its backend.
+	 * @author Arjun Vikram
+	 * @since 1.0.0
+	 */	
 	public UrlParametersMap() {
 		map = new HashMap<>();
 	}
 	
+	/**
+	 * Creates a new UrlParametersMap with the specified map as its backend.
+	 * Used only for dependancy injection purposes.
+	 * @param map A map to use as the backend for the UrlParametersMap
+	 * @author Arjun Vikram
+	 * @since 1.0.0
+	 */
 	public UrlParametersMap(Map<String,ParameterValue> map){
 		this.map=map;
 	}
 	
+	/**
+	 * Adds a parameter to the UrlParametersMap.
+	 * @param name The name of the parameter to be added
+	 * @param type The type of the parameter to be added, must be one of {@link ParameterTypes}
+	 * @param value The value of the parameter to be added
+	 * @author Arjun Vikram
+	 * @since 1.0.0
+	 */
 	public void addParameter(String name, String type, Object value){
 		addParameter(name, ParameterType.valueOf(type),value);
 	}
