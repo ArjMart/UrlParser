@@ -3,6 +3,14 @@ package com.arjvik.arjmart.urlparser;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The UrlParametersMap class is responsible for returning the parameters passed to it. Its usage is as follows:
+ * <pre>
+ * UrlParametersMap params = parser.parse("/some/uri");
+ * Boolean hasStringName = params.parameterExists("stringParamName");
+ * String stringParameterName = params.getString("stringParamName");
+ * </pre>
+ */
 public class UrlParametersMap {
 
 	private Map<String,ParameterValue> map;
