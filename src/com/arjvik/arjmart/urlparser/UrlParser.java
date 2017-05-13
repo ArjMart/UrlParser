@@ -4,7 +4,7 @@ package com.arjvik.arjmart.urlparser;
  * The UrlParser class is responsible for parsing URIs, and returning their parameters.
  * It aims to abstract the parsing of parameters in a RESTful API and instead allow
  * the developer to focus on the back-end of the RESTful API. Its usage is as follows:
- * <br/>
+ * <br>
  * Setup:
  * <pre>
  * UrlParser parser = new UrlParser();
@@ -37,7 +37,7 @@ public class UrlParser {
 	 * @author Arjun Vikram
 	 * @since 1.0.0
 	 * @param template the template passed to setDelimeter
-	 * @see UrlParser#setTemplate(String)
+	 * @see #setTemplate(String)
 	 */
 	public UrlParser(String template) {
 		this();
@@ -49,7 +49,7 @@ public class UrlParser {
 	 * 
 	 * @author Arjun Vikram
 	 * @since 1.0.0
-	 * @see UrlParser#setDelimiter(String)
+	 * @see #setDelimiter(String)
 	 */
 	public UrlParser() {
 		setDelimiter("[/\\\\]");
@@ -60,7 +60,7 @@ public class UrlParser {
 	 * @author Arjun Vikram
 	 * @since 1.0.0
 	 * @return the delimiter used by the UrlParser
-	 * @see UrlParser#setDelimiter(String)
+	 * @see #setDelimiter(String)
 	 */
 	public String getDelimiter() {
 		return delimiter;
@@ -72,7 +72,7 @@ public class UrlParser {
 	 * @author Arjun Vikram
 	 * @since 1.0.0
 	 * @param delimiter the delimiter to be used for the UrlParser
-	 * @see UrlParser#getDelimiter()
+	 * @see #getDelimiter()
 	 */
 	public void setDelimiter(String delimiter) {
 		this.delimiter = delimiter;
@@ -83,7 +83,7 @@ public class UrlParser {
 	 * @author Arjun Vikram
 	 * @since 1.0.0
 	 * @return the template used by the UrlParser
-	 * @see UrlParser#setTemplate(String)
+	 * @see #setTemplate(String)
 	 */
 	public String getTemplate() {
 		return template;
@@ -94,7 +94,7 @@ public class UrlParser {
 	 * @author Arjun Vikram
 	 * @since 1.0.0
 	 * @return the broken form of the template used by the UrlParser
-	 * @see UrlParser#setTemplate(String)
+	 * @see #setTemplate(String)
 	 */
 	public String[] getBrokenTemplate() {
 		return brokenTemplate;
@@ -111,7 +111,7 @@ public class UrlParser {
 	 * @author Arjun Vikram
 	 * @since 1.0.0
 	 * @param template the template to be used for the UrlParser
-	 * @see UrlParser#getTemplate()
+	 * @see #getTemplate()
 	 */
 	public void setTemplate(String template) {
 		this.template = template;
@@ -135,7 +135,7 @@ public class UrlParser {
 	
 	/**
 	 * Allows you to add parameters to a custom UrlParametersMap or a subclass
-	 * @see UrlParser#parse(String)
+	 * @see #parse(String)
 	 * @author Arjun Vikram
 	 * @since 1.0.0
 	 * @param URI the URI to parse
@@ -284,7 +284,7 @@ public class UrlParser {
 	 * Removes the last delimiter (slash by default) in the URI passed to it.
 	 * If the passed string ends with the delimiter, it is removed.
 	 * Otherwise, it is returned as is
-	 * @see UrlParser#trimLastSlash(String, String)
+	 * @see #trimLastSlash(String, String)
 	 * @author Arjun Vikram
 	 * @since 1.0.0
 	 * @param s the URI to trim
