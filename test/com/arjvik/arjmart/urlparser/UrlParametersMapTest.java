@@ -15,7 +15,7 @@ public class UrlParametersMapTest {
 		@SuppressWarnings("unchecked")
 		Map<String,ParameterValue> map = (Map<String,ParameterValue>) mock(HashMap.class);
 		UrlParametersMap parameters = new UrlParametersMap(map);
-		parameters.addParameter("ParameterName", "STRING", "value");
+		parameters.addParameter("ParameterName", ParameterType.STRING, "value");
 		verify(map).put("ParameterName", new ParameterValue(ParameterType.STRING,"value"));
 	}
 

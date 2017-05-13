@@ -48,6 +48,7 @@ public class UrlParametersMap {
 	 * @since 1.0.0
 	 * @see #addParameter(String, ParameterType, Object)
 	 */
+	@Deprecated
 	public void addParameter(String name, String type, Object value){
 		addParameter(name, ParameterType.valueOf(type),value);
 	}
