@@ -103,7 +103,7 @@ public class UrlParser {
 	/**
 	 * Sets the template used by the UrlParser.
 	 * The template is the base URI with placeholders in the parameters
-	 * For example: {@code /path/to/resource/{STRING:StringParam}/{INT:IntParam}/more/paths/{BOOLEAN:BooleanParam}.
+	 * For example: {@code /path/to/resource/{STRING:StringParam}/{INT:IntParam}/more/paths/{BOOLEAN:BooleanParam}}.
 	 * Please do not close the path with a / (or other delimiter). The parser strips out these characters during parsing
 	 * Placeholder values are as follows: {@code{TYPE:name}}.
 	 * The type can be any of the types listed in {@link ParameterType}, namely STRING, INT, BOOLEAN. 
@@ -239,30 +239,34 @@ public class UrlParser {
 	 *      <th>String</th>
 	 *      <th>Boolean</th>
 	 * 	</tr>
+	 *  <tr>
 	 *      <td>true</td>
 	 *      <td>{@code true}</td>
 	 * 	</tr>
+	 *  <tr>
 	 *      <td>false</td>
 	 *      <td>{@code false}</td>
 	 * 	</tr>
+	 *  <tr>
 	 *      <td>1</td>
 	 *      <td>{@code true}</td>
 	 * 	</tr>
+	 *  <tr>
 	 *      <td>0</td>
 	 *      <td>{@code false}</td>
 	 * 	</tr>
+	 *  <tr>
 	 *      <td>yes</td>
 	 *      <td>{@code true}</td>
 	 * 	</tr>
+	 *  <tr>
 	 *      <td>no</td>
 	 *      <td>{@code false}</td>
 	 * 	</tr>
 	 * </table>
 	 * @author Arjun Vikram
 	 * @since 1.0.0
-	 * @param name the name of the parameter
 	 * @param value the value of the parameter
-	 * @param params the {@link UrlParametersMap} to add the parameter to
 	 * @return the boolean value of the passed value
 	 * @throws NumberFormatException if value is not one of the possible values listed above
 	 */
