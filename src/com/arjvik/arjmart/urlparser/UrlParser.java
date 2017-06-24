@@ -103,9 +103,9 @@ public class UrlParser {
 	/**
 	 * Sets the template used by the UrlParser.
 	 * The template is the base URI with placeholders in the parameters
-	 * For example: {@code /path/to/resource/{STRING:StringParam}/{INT:IntParam}/more/paths/{BOOLEAN:BooleanParam}}.
-	 * Please do not close the path with a / (or other delimiter). The parser strips out these characters during parsing
-	 * Placeholder values are as follows: {@code{TYPE:name}}.
+	 * For example: <pre>/path/to/resource/{STRING:StringParam}/{INT:IntParam}/more/paths/{BOOLEAN:BooleanParam}</pre>
+	 * Please do not close the path with a / (or other delimiter). The parser strips out these characters during parsing.
+	 * Placeholder values are as follows: <code> {TYPE:name} </code>.
 	 * The type can be any of the types listed in {@link ParameterType}, namely STRING, INT, BOOLEAN. 
 	 * The name can be any alphanumeric value.
 	 * @author Arjun Vikram
